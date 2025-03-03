@@ -1,0 +1,55 @@
+<div id="success-toast" class="hidden z-50 fixed top-4 right-4 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-700 bg-white divide-x rtl:divide-x-reverse divide-gray-300 rounded-lg shadow-md" role="alert">
+    <svg class="w-5 h-5 text-green-600 rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 17 8 2L9 1 1 19l8-2Zm0 0V9"/>
+    </svg>
+    <div class="ps-4 text-sm font-normal">Successful Submission !</div>
+</div>
+
+
+<div (click)="openDialog()"
+    data-modal-target="default-modal" data-modal-toggle="default-modal"
+    class="card rounded overflow-hidden shadow-lg">
+    <div class="image">
+        <img [src]="job.cover" alt="Card image">
+    </div>
+    <div class="content">
+        
+        <div class="title">{{ job.title }}</div>
+
+        <small>Jobs Global</small>
+
+        <div class="location">
+            <span>{{ job.job_locations | jobLocations  }} </span>
+            <span> ({{job.type}})</span>
+        </div>
+        
+        @if (job.apply.length) {
+            <div class="applied-peaple">{{ job.apply.length }} people applied for this job</div>
+        }
+
+        @if (job.date_published) {
+            <div class="published-date">{{ job.date_published | jobPublishedDate }}</div>
+        }
+    </div>
+</div>
+
+<div>
+  
+@if (showDetails) {
+    <!-- Main modal -->
+    <div class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+        <div class="relative p-4 w-full max-w-2xl">
+          <!-- Modal content -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-300">
+            <!-- Modal body -->
+            <app-job-details [job]="job" (modalClosed)="closeDialog($event)"></app-job-details>
+            <!-- Modal footer -->
+            <div class="flex items-center justify-end p-5 border-t border-gray-300 rounded-b">
+              <button (click)="closeDialog()" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-red-700 focus:ring-4 focus:ring-gray-200">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>  
+}

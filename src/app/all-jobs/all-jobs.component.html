@@ -1,0 +1,84 @@
+<div class="sticky top-0 bg-white shadow-md z-50">
+    <app-nav-bar></app-nav-bar>
+</div>
+  
+<div class="w-full p-4 justify-center flex">
+    <form [formGroup]="searchForm" class="bg-white w-full shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+          Title
+        </label>
+        <input formControlName="title" 
+          id="title" type="text" placeholder="Job Title"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="location">
+          Location
+        </label>
+        <input formControlName="location"
+          id="location" type="text" placeholder="Job Location"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+      </div>
+    </form>
+</div>
+  
+<hr>
+  
+@if (error && !loading) {
+    <div class="container mx-auto">
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-4" role="alert">
+        <strong class="font-bold">Error!</strong>
+        <span class="block sm:block">Something went wrong while fetching the data.</span>
+      </div>
+    </div>
+}
+  
+@if (jobs.length && !loading) {
+    <div class="container jobs mx-auto mt-4">
+      <div class="flex flex-col gap-4 w-full mx-4">
+        @for (job of jobs; track $index) {
+          <app-job-card [job]="job"></app-job-card>
+        }
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center space-x-2 my-4">
+        <button 
+          (click)="changePage('-')" 
+          [disabled]="page <= 1"
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md 
+                 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+          Previous
+        </button>
+      
+        <span class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md">
+          Page {{ page }} of {{ lastPage }}
+        </span>
+      
+        <button 
+          (click)="changePage('+')" 
+          [disabled]="page >= lastPage"
+          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md 
+                 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+          Next
+        </button>
+    </div>
+      
+}
+  
+@if (loading) {
+    <div class="p-6 bg-white shadow-lg rounded-lg animate-pulse my-4">
+      <div class="h-8 bg-gray-300 rounded w-3/4 mb-4"></div>
+      <div class="h-4 bg-gray-300 rounded w-full mb-2"></div>
+      <div class="h-4 bg-gray-300 rounded w-5/6 mb-2"></div>
+      <div class="h-4 bg-gray-300 rounded w-4/6 mb-4"></div>
+    
+      <div class="h-10 bg-gray-300 rounded w-1/2"></div>
+    </div>
+}
+  
+<p class="text-center text-gray-500 text-xs">
+    &copy;2020 Acme Corp. All rights reserved.
+</p>
+  

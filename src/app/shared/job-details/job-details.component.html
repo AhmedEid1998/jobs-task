@@ -1,0 +1,195 @@
+<div id="toast-warning" class="hidden z-50 fixed top-4 right-4 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-700 bg-white divide-x rtl:divide-x-reverse divide-gray-300 rounded-lg shadow-md" role="alert">
+  <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"/>
+      </svg>
+      <span class="sr-only">Warning icon</span>
+  </div>
+  <div class="ms-3 text-sm font-normal">The maximum file size is 3 MB.</div>
+</div>
+
+<div class="md:flex p-4">
+  <ul class="flex-column space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0">
+    <li *ngFor="let item of navItems; let i = index">
+      <a 
+        (click)="setActive(i)" 
+        class="inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer"
+        [ngClass]="{
+          'bg-blue-700 text-white': activeIndex === i, 
+          'bg-gray-100 hover:bg-gray-200 hover:text-gray-900': activeIndex !== i,
+          'opacity-50 cursor-not-allowed pointer-events-none': item.label === 'Apply' && job.applied
+        }">
+        <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+          <path [attr.d]="item.icon"></path>
+        </svg>
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+  
+  <div class="p-6 bg-gray-100 text-medium rounded-lg w-full">
+    <h3 class="text-lg font-bold text-gray-900 mb-2">
+      {{ navItems[activeIndex].label == 'Apply' ? 'Apply This Job' : navItems[activeIndex].label }}
+    </h3>
+    <hr>
+    @if (navItems[activeIndex].label == 'Apply') {
+      <form class="mt-1" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700">Name</label>
+            <input type="text" formControlName="name" class="input-field" />
+            @if (jobForm.get('name')?.touched && jobForm.get('name')?.invalid) {
+              <div class="error-message">Name is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Email</label>
+            <input type="email" formControlName="email" class="input-field" />
+            @if (jobForm.get('email')?.touched && jobForm.get('email')?.invalid) {
+              <div class="error-message">
+                @if (jobForm.get('email')?.hasError('required')) {
+                  <div>Email is required</div>
+                }
+                @if (jobForm.get('email')?.hasError('email')) {
+                  <div>Invalid email address</div>
+                }
+              </div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Phone</label>
+            <input type="text" formControlName="phone" class="input-field" />
+            @if (jobForm.get('phone')?.touched && jobForm.get('phone')?.invalid) {
+              <div class="error-message">Phone is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Country</label>
+            <input type="text" formControlName="country" class="input-field" />
+            @if (jobForm.get('country')?.touched && jobForm.get('country')?.invalid) {
+              <div class="error-message">Country is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Education</label>
+            <input type="text" formControlName="education" class="input-field" />
+            @if (jobForm.get('education')?.touched && jobForm.get('education')?.invalid) {
+              <div class="error-message">Education is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Current Position</label>
+            <input type="text" formControlName="currentPosition" class="input-field" />
+            @if (jobForm.get('currentPosition')?.touched && jobForm.get('currentPosition')?.invalid) {
+              <div class="error-message">Current position is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Company</label>
+            <input type="text" formControlName="company" class="input-field" />
+            @if (jobForm.get('company')?.touched && jobForm.get('company')?.invalid) {
+              <div class="error-message">Company is required</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">CV</label>
+            <input type="file" (change)="onFileChange($event, 'CV')" class="input-field" />
+            @if (jobForm.get('CV')?.touched && jobForm.get('CV')?.invalid) {
+              <div class="error-message">CV is required and should be less than 3MB</div>
+            }
+          </div>
+    
+          <div>
+            <label class="block text-gray-700">Cover Letter</label>
+            <input type="file" (change)="onFileChange($event, 'coverLetter')" class="input-field" />
+            @if (jobForm.get('coverLetter')?.touched && jobForm.get('coverLetter')?.invalid) {
+              <div class="error-message">Cover Letter is required and should be less than 3MB</div>
+            }
+          </div>
+        </div>
+        <div class="mt-6 flex justify-center">
+          <button 
+            type="submit" 
+            class="w-full md:w-auto bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md 
+                   hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 
+                   disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            [disabled]="jobForm.invalid">
+            Submit Application
+          </button>
+        </div>        
+      </form>
+    } @else {
+      <div class="job-details">
+        <div class="image">
+          <img class="w-full" [src]="job.cover" alt="Job image">
+        </div>
+
+        <div class="content">
+        
+          <div class="title">{{ job.title }}</div>
+  
+          <small>Jobs Global</small>
+  
+          <div class="location">
+              @if (job.job_locations | jobLocations) {
+                <span>{{ job.job_locations | jobLocations }}  . </span>
+              }
+              <span style="color: #01754f;"> {{ job.date_published | jobPublishedDate }} </span>
+              @if (job.apply.length) {
+                <span> . {{ job.apply.length }} Applicants </span>
+              }
+          </div>
+
+          <div class="job-type">
+            <svg class="w-6 h-6 text-gray-900 dark:text-gray-800 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M19.728 10.686c-2.38 2.256-6.153 3.381-9.875 3.381-3.722 0-7.4-1.126-9.571-3.371L0 10.437V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7.6l-.272.286Z"/>
+              <path d="m.135 7.847 1.542 1.417c3.6 3.712 12.747 3.7 16.635.01L19.605 7.9A.98.98 0 0 1 20 7.652V6a2 2 0 0 0-2-2h-3V3a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H2a2 2 0 0 0-2 2v1.765c.047.024.092.051.135.082ZM10 10.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5ZM7 3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1H7V3Z"/>
+            </svg>
+            <small>Onsite</small>
+            <small>Full time</small>
+          </div>
+
+          <p appSeeMoreLess [maxLength]="150"
+            class="text-gray-700 py-2">
+            {{ job.description }}
+          </p>
+
+          <div class="px-6 pt-4 pb-2">
+            @if (job.priority) {
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #{{ job.priority }}
+              </span>
+            }
+            @if (job.number_of_vacancies) {
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #{{ job.number_of_vacancies }} Vacancies
+              </span>
+            }
+            @if (job.minimum_years_of_experience) {
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #{{ job.minimum_years_of_experience }} YoE
+              </span>
+            }
+          </div>
+
+          @if (job.applied) {
+            <button disabled type="button" class="applied-btn py-2.5 px-5 mx-3 text-sm font-medium text-gray-400 focus:outline-none rounded-lg border border-gray-300">
+              Applied
+            </button>
+          }
+
+          <button (click)="toggleSaveJob()" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">
+            {{ job.saved ? 'Saved' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

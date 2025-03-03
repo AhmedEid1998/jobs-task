@@ -1,0 +1,96 @@
+ul {
+  li {
+    a {
+      width: max-content;
+      cursor: pointer;
+    }
+  }
+}
+
+.job-details {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+
+  .image {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    text-align: center;
+    img {
+      border-radius: 24px;
+      margin: auto;
+      height: 100% !important;
+      object-fit: contain;
+    }
+    @media (max-width: 991px) {
+      height: max-content;
+      img {
+        object-fit: fill;
+        width: 100%;
+      }
+    }
+  }
+
+  .content {
+    margin: 5px 15px;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      width: max-content;
+      color: #092433;
+    }
+
+    small {
+      font-weight: 600;
+    }
+    
+    .applied-people {
+      font-weight: 600;
+    }
+
+    .published-date {
+      opacity: 0.5;
+    }
+
+    .job-type {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 10px;
+
+      small {
+        font-weight: normal;
+        margin-left: 5px;
+        background-color: #dee9da;
+        padding: 5px;
+        border-radius: 5px;
+      }
+    }
+
+    .applied-btn {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+form {
+  .input-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 4px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
